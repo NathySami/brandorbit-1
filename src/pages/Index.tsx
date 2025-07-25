@@ -75,15 +75,15 @@ const Index = () => {
               
               <div className="flex items-center justify-center lg:justify-start space-x-8 pt-8">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">500+</div>
+                  <div className="text-2xl font-bold text-white">500+</div>
                   <div className="text-sm text-muted-foreground">Brands Transformed</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-space-purple">98%</div>
+                  <div className="text-2xl font-bold text-gray-300">98%</div>
                   <div className="text-sm text-muted-foreground">Success Rate</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-cosmic-blue">24/7</div>
+                  <div className="text-2xl font-bold text-gray-400">24/7</div>
                   <div className="text-sm text-muted-foreground">Support</div>
                 </div>
               </div>
@@ -96,9 +96,9 @@ const Index = () => {
         </div>
         
         {/* Floating elements */}
-        <div className="absolute top-1/4 left-1/12 w-2 h-2 bg-primary rounded-full float-animation"></div>
-        <div className="absolute top-1/3 right-1/12 w-1 h-1 bg-space-purple rounded-full float-animation" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-1/4 left-1/6 w-1.5 h-1.5 bg-cosmic-blue rounded-full float-animation" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/4 left-1/12 w-2 h-2 bg-white rounded-full float-animation"></div>
+        <div className="absolute top-1/3 right-1/12 w-1 h-1 bg-gray-300 rounded-full float-animation" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-1/4 left-1/6 w-1.5 h-1.5 bg-gray-400 rounded-full float-animation" style={{ animationDelay: '4s' }}></div>
       </section>
 
       {/* Services Section */}
@@ -115,11 +115,11 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-orbit group fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="text-primary group-hover:text-space-purple transition-colors duration-300 mb-4">
+              <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                <div className="text-white group-hover:text-gray-300 transition-colors duration-300 mb-4">
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                <h3 className="text-xl font-semibold mb-3 group-hover:text-white transition-colors duration-300">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground">

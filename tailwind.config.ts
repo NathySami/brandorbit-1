@@ -52,7 +52,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom space-themed colors
+				// Custom monochromatic colors
 				'orbit-glow': 'hsl(var(--orbit-glow))',
 				'space-purple': 'hsl(var(--space-purple))',
 				'cosmic-blue': 'hsl(var(--cosmic-blue))',
