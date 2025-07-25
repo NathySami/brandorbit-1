@@ -26,6 +26,12 @@ const About = () => {
     }
   ];
 
+  const stats = [
+    { icon: <Calendar className="w-6 h-6" />, label: "Years Experience", value: "15+" },
+    { icon: <Users className="w-6 h-6" />, label: "Happy Clients", value: "500+" },
+    { icon: <Award className="w-6 h-6" />, label: "Awards Won", value: "50+" },
+    { icon: <MapPin className="w-6 h-6" />, label: "Countries Served", value: "25+" }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-space">

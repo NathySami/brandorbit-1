@@ -43,7 +43,26 @@ const Contact = () => {
     "Other"
   ];
 
-
+  const offices = [
+    {
+      city: "San Francisco",
+      address: "123 Digital Avenue, CA 94102",
+      phone: "+1 (555) 123-4567",
+      email: "sf@brandorbit.com"
+    },
+    {
+      city: "New York",
+      address: "456 Innovation Street, NY 10001",
+      phone: "+1 (555) 234-5678",
+      email: "ny@brandorbit.com"
+    },
+    {
+      city: "London",
+      address: "789 Tech Lane, EC2A 4BX",
+      phone: "+44 20 7123 4567",
+      email: "london@brandorbit.com"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-space">
