@@ -16,7 +16,7 @@ const Services = () => {
         "User Experience Focus",
         "Mobile-First Approach"
       ],
-      price: "Starting at $2,999"
+      price: "Starting at 2,999 ETB"
     },
     {
       icon: <Settings className="w-8 h-8" />,
@@ -29,7 +29,7 @@ const Services = () => {
         "Custom Workflows",
         "Scalable Solutions"
       ],
-      price: "Starting at $5,999"
+      price: "Starting at 5,999 ETB"
     },
     {
       icon: <Search className="w-8 h-8" />,
@@ -42,7 +42,7 @@ const Services = () => {
         "Link Building",
         "Performance Tracking"
       ],
-      price: "Starting at $1,999"
+      price: "Starting at 1,999 ETB"
     },
     {
       icon: <Megaphone className="w-8 h-8" />,
@@ -55,7 +55,7 @@ const Services = () => {
         "Email Campaigns",
         "Influencer Partnerships"
       ],
-      price: "Starting at $2,499"
+      price: "Starting at 2,499 ETB"
     },
     {
       icon: <Sparkles className="w-8 h-8" />,
@@ -68,7 +68,7 @@ const Services = () => {
         "Design System Setup",
         "Asset Creation"
       ],
-      price: "Starting at $999"
+      price: "Starting at 999 ETB"
     },
     {
       icon: <Laptop className="w-8 h-8" />,
@@ -81,7 +81,7 @@ const Services = () => {
         "Training & Support",
         "Ongoing Optimization"
       ],
-      price: "Starting at $9,999"
+      price: "Starting at 9,999 ETB"
     }
   ];
 
