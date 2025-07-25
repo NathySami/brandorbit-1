@@ -52,6 +52,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Custom space-themed colors
+				'orbit-glow': 'hsl(var(--orbit-glow))',
+				'space-purple': 'hsl(var(--space-purple))',
+				'cosmic-blue': 'hsl(var(--cosmic-blue))',
+				'star-white': 'hsl(var(--star-white))',
+				'void-black': 'hsl(var(--void-black))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -88,7 +94,16 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'orbit-rotate': 'orbit-rotate 20s linear infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
+				'fade-in-up': 'fade-in-up 1s ease-out forwards'
+			},
+			backgroundImage: {
+				'gradient-cosmic': 'var(--gradient-cosmic)',
+				'gradient-orbit': 'var(--gradient-orbit)',
+				'gradient-space': 'var(--gradient-space)'
 			}
 		}
 	},
