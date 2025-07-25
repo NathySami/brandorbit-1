@@ -209,7 +209,7 @@ const CaseStudies = () => {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 fade-in-up">
             <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-              Industries We've <span className="text-gradient">Transformed</span>
+              Industries We can <span className="text-gradient">Transformed</span>
             </h2>
             <p className="text-xl text-muted-foreground">
               Our expertise spans across diverse sectors, delivering tailored solutions for every industry
