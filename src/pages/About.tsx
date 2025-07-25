@@ -5,33 +5,27 @@ import { Users, Rocket, Target, Award, Calendar, MapPin } from "lucide-react";
 const About = () => {
   const team = [
     {
-      name: "Alex Chen",
+      name: "Ismael Ibrahim",
       role: "CEO & Founder",
-      description: "Visionary leader with 15+ years in digital transformation"
+      description: "Visionary leader in digital transformation"
     },
     {
-      name: "Sarah Johnson",
+      name: "Elnathan Berhane",
       role: "Creative Director",
       description: "Award-winning designer specializing in brand identity"
     },
     {
-      name: "Marcus Rodriguez",
+      name: "Nathan Samuel",
       role: "Technical Lead",
       description: "Full-stack developer with expertise in modern web technologies"
     },
     {
-      name: "Emily Park",
+      name: "Elyab Mesfin",
       role: "Strategy Director",
       description: "Digital marketing strategist driving brand growth"
     }
   ];
 
-  const stats = [
-    { icon: <Calendar className="w-6 h-6" />, label: "Years Experience", value: "15+" },
-    { icon: <Users className="w-6 h-6" />, label: "Happy Clients", value: "500+" },
-    { icon: <Award className="w-6 h-6" />, label: "Awards Won", value: "50+" },
-    { icon: <MapPin className="w-6 h-6" />, label: "Countries Served", value: "25+" }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-space">

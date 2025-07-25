@@ -9,20 +9,20 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: <MapPin className="w-6 h-6" />,
-      title: "Visit Our Office",
-      details: ["123 Digital Avenue", "Tech District, Silicon Valley", "CA 94102, United States"],
+      title: "Visit Us",
+      details: ["Addis Ababa,Ethiopia"],
       action: "Get Directions"
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Call Us",
-      details: ["+1 (555) 123-4567", "+1 (555) 987-6543", "Mon-Fri 9AM-6PM PST"],
+      details: ["+251941438850", "+251942409721", "Mon-Fri 9AM-6PM PST"],
       action: "Call Now"
     },
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Us",
-      details: ["hello@brandorbit.com", "support@brandorbit.com", "careers@brandorbit.com"],
+      details: ["brandorbit1@gmail.com"],
       action: "Send Email"
     },
     {
@@ -43,26 +43,7 @@ const Contact = () => {
     "Other"
   ];
 
-  const offices = [
-    {
-      city: "San Francisco",
-      address: "123 Digital Avenue, CA 94102",
-      phone: "+1 (555) 123-4567",
-      email: "sf@brandorbit.com"
-    },
-    {
-      city: "New York",
-      address: "456 Innovation Street, NY 10001",
-      phone: "+1 (555) 234-5678",
-      email: "ny@brandorbit.com"
-    },
-    {
-      city: "London",
-      address: "789 Tech Lane, EC2A 4BX",
-      phone: "+44 20 7123 4567",
-      email: "london@brandorbit.com"
-    }
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-space">
