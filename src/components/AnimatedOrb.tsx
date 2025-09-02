@@ -1,136 +1,32 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
 const AnimatedOrb = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
-  const frameIdRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-
-    // camera
-    const camera = new THREE.PerspectiveCamera(60, 1, 0.01, 2000); // aspect ratio will be updated
-    camera.position.set(680.54, 496, 1637.05);
-    camera.quaternion.setFromEuler(new THREE.Euler(-0.29, 0.4, 0.11));
-    cameraRef.current = camera;
-
-    // scene
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    // Add some basic geometry while we work on loading your Spline model
-    const geometry = new THREE.SphereGeometry(200, 32, 32);
-    const material = new THREE.MeshPhongMaterial({ 
-      color: 0x4f46e5,
-      transparent: true,
-      opacity: 0.8,
-      wireframe: false
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(500, 500, 500);
-    scene.add(directionalLight);
-
-    // renderer
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas: canvasRef.current,
-      antialias: true 
-    });
-    
-    // Set initial size
-    const container = canvasRef.current.parentElement;
-    if (container) {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    }
-    
-    rendererRef.current = renderer;
-
-    // scene settings
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap;
-    scene.background = new THREE.Color('#000000');
-    renderer.setClearAlpha(1);
-
-    // orbit controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.125;
-    controlsRef.current = controls;
-
-    // animation function
-    function animate() {
-      if (controlsRef.current) {
-        controlsRef.current.update();
-      }
-      if (rendererRef.current && sceneRef.current && cameraRef.current) {
-        rendererRef.current.render(sceneRef.current, cameraRef.current);
-      }
-      frameIdRef.current = requestAnimationFrame(animate);
-    }
-    animate();
-
-    // Handle resize
-    const handleResize = () => {
-      if (!cameraRef.current || !rendererRef.current || !canvasRef.current) return;
-      
-      const container = canvasRef.current.parentElement;
-      if (container) {
-        const width = container.clientWidth;
-        const height = container.clientHeight;
-        
-        cameraRef.current.aspect = width / height;
-        cameraRef.current.updateProjectionMatrix();
-        rendererRef.current.setSize(width, height);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup function
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      
-      if (frameIdRef.current) {
-        cancelAnimationFrame(frameIdRef.current);
-      }
-      
-      if (controlsRef.current) {
-        controlsRef.current.dispose();
-      }
-      
-      if (rendererRef.current) {
-        rendererRef.current.dispose();
-      }
-      
-      if (sceneRef.current) {
-        // Clean up scene objects
-        sceneRef.current.clear();
-      }
-    };
-  }, []);
-
   return (
     <div className="relative w-96 h-96 mx-auto">
-      <canvas 
-        ref={canvasRef}
-        className="w-full h-full"
-        style={{ display: 'block' }}
-      />
+      {/* Outer orbit ring */}
+      <div className="absolute inset-0 border-2 border-white/30 rounded-full orbit-rotate">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full glow-pulse"></div>
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-2 h-2 bg-gray-300 rounded-full glow-pulse"></div>
+      </div>
+      
+      {/* Middle orbit ring */}
+      <div className="absolute inset-4 border border-gray-400/40 rounded-full orbit-rotate" style={{ animationDirection: 'reverse', animationDuration: '15s' }}>
+        <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-gray-400 rounded-full glow-pulse"></div>
+        <div className="absolute bottom-0 left-0 transform -translate-x-1/2 translate-y-1/2 w-1.5 h-1.5 bg-gray-500 rounded-full glow-pulse"></div>
+      </div>
+      
+      {/* Inner core */}
+      <div className="absolute inset-8 bg-gradient-to-br from-white to-gray-400 rounded-full shadow-glow float-animation">
+        <div className="absolute inset-2 border border-white/50 rounded-full">
+          <div className="absolute inset-2 bg-white/20 rounded-full backdrop-blur-sm">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-br from-white/60 to-gray-300/60 rounded-full glow-pulse"></div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Floating particles */}
+      <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full float-animation"></div>
+      <div className="absolute top-3/4 right-1/4 w-1.5 h-1.5 bg-gray-300 rounded-full float-animation" style={{ animationDelay: '2s' }}></div>
+      <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-gray-400 rounded-full float-animation" style={{ animationDelay: '4s' }}></div>
+      <div className="absolute bottom-1/4 left-1/3 w-1 h-1 bg-gray-200 rounded-full float-animation" style={{ animationDelay: '1s' }}></div>
     </div>
   );
 };
