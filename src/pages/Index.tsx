@@ -3,8 +3,11 @@ import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import AnimatedOrb from "@/components/AnimatedOrb";
 import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Search, Megaphone, Settings, Laptop } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+  
   const services = [
     {
       icon: <Code className="w-6 h-6" />,
@@ -61,7 +64,11 @@ const Index = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8">
+                <Button 
+                  size="lg" 
+                  onClick={() => navigate('/contact')}
+                  className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8"
+                >
                   <Rocket className="w-5 h-5 mr-2" />
                   Launch Your Brand
                   <ArrowRight className="w-5 h-5 ml-2" />
