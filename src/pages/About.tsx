@@ -1,38 +1,34 @@
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
 import { Users, Rocket, Target, Award, Calendar, MapPin } from "lucide-react";
-
 const About = () => {
-  const team = [
-    {
-      name: "Ismael Ibrahim",
-      role: "CEO & Founder",
-      description: "Visionary leader in digital transformation"
-    },
-    {
-      name: "Elnathan Berhane",
-      role: "Creative Director",
-      description: "Award-winning designer specializing in brand identity"
-    },
-    {
-      name: "Nathan Samuel",
-      role: "Technical Lead",
-      description: "Full-stack developer with expertise in modern web technologies"
-    },
-    {
-      name: "Elyab Mesfin",
-      role: "Strategy Director",
-      description: "Digital marketing strategist driving brand growth"
-    }
-  ];
-
-  const stats = [
-    { icon: <Calendar className="w-6 h-6" />, label: "Years Experience", value: "15+" },
-    { icon: <Users className="w-6 h-6" />, label: "Happy Clients", value: "500+" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-space">
+  const team = [{
+    name: "Ismael Ibrahim",
+    role: "CEO & Founder",
+    description: "Visionary leader in digital transformation"
+  }, {
+    name: "Elnathan Berhane",
+    role: "Creative Director",
+    description: "Award-winning designer specializing in brand identity"
+  }, {
+    name: "Nathan Samuel",
+    role: "Technical Lead",
+    description: "Full-stack developer with expertise in modern web technologies"
+  }, {
+    name: "Elyab Mesfin",
+    role: "Strategy Director",
+    description: "Digital marketing strategist driving brand growth"
+  }];
+  const stats = [{
+    icon: <Calendar className="w-6 h-6" />,
+    label: "Years Experience",
+    value: "15+"
+  }, {
+    icon: <Users className="w-6 h-6" />,
+    label: "Happy Clients",
+    value: "500+"
+  }];
+  return <div className="min-h-screen bg-gradient-space">
       <Navigation />
       
       {/* Hero Section */}
@@ -67,7 +63,9 @@ const About = () => {
               </p>
             </Card>
             
-            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50 fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <Card className="p-8 bg-card/50 backdrop-blur-sm border-border/50 fade-in-up" style={{
+            animationDelay: '0.2s'
+          }}>
               <div className="text-white mb-4">
                 <Target className="w-8 h-8" />
               </div>
@@ -82,26 +80,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 relative">
-        <div className="absolute inset-0 bg-gradient-orbit opacity-50"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <h2 className="text-3xl lg:text-4xl font-bold text-center mb-12 fade-in-up">
-            Our <span className="text-gradient">Goal</span>
-          </h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="text-white mb-4 flex justify-center">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
-                <div className="text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Team Section */}
       <section className="py-16">
@@ -116,16 +95,16 @@ const About = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit text-center fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            {team.map((member, index) => <Card key={index} className="p-6 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit text-center fade-in-up" style={{
+            animationDelay: `${index * 0.1}s`
+          }}>
                 <div className="w-20 h-20 bg-gradient-cosmic rounded-full mx-auto mb-4 flex items-center justify-center">
                   <Users className="w-8 h-8 text-black" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
                 <p className="text-primary mb-3">{member.role}</p>
                 <p className="text-muted-foreground text-sm">{member.description}</p>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -145,14 +124,18 @@ const About = () => {
               </p>
             </div>
             
-            <div className="text-center fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <div className="text-center fade-in-up" style={{
+            animationDelay: '0.2s'
+          }}>
               <h3 className="text-xl font-semibold mb-4">Excellence</h3>
               <p className="text-muted-foreground">
                 Every project receives our full attention to detail, ensuring the highest quality deliverables.
               </p>
             </div>
             
-            <div className="text-center fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="text-center fade-in-up" style={{
+            animationDelay: '0.4s'
+          }}>
               <h3 className="text-xl font-semibold mb-4">Partnership</h3>
               <p className="text-muted-foreground">
                 We believe in building long-term relationships with our clients, becoming true partners in their success.
@@ -161,8 +144,6 @@ const About = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default About;
