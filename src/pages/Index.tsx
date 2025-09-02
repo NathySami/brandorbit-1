@@ -74,7 +74,12 @@ const Index = () => {
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 
-                <Button size="lg" variant="outline" className="border-primary/50 hover:bg-primary/10 text-lg px-8">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  onClick={() => navigate('/services')}
+                  className="border-primary/50 hover:bg-primary/10 text-lg px-8"
+                >
                   <Globe className="w-5 h-5 mr-2" />
                   Explore Services
                 </Button>
