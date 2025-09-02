@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Rocket } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import brandOrbitLogo from "@/assets/brandorbit-logo.png";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -44,7 +45,7 @@ const Navigation = () => {
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-cosmic group-hover:w-full transition-all duration-300"></span>
               </Link>
             ))}
-            <Button className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
+            <Button onClick={() => navigate('/contact')} className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
               <Rocket className="w-4 h-4 mr-2" />
               Launch Your Brand
             </Button>
@@ -80,7 +81,7 @@ const Navigation = () => {
               </Link>
             ))}
             <div className="px-4 pt-2">
-              <Button className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
+              <Button onClick={() => navigate('/contact')} className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
                 <Rocket className="w-4 h-4 mr-2" />
                 Launch Your Brand
               </Button>
