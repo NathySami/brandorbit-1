@@ -112,9 +112,9 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up" style={{
+            {services.map((service, index) => <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up cursor-pointer" style={{
             animationDelay: `${index * 0.1}s`
-          }}>
+          }} onClick={() => navigate('/services')}>
                 <div className="text-white group-hover:text-gray-300 transition-colors duration-300 mb-4">
                   {service.icon}
                 </div>
