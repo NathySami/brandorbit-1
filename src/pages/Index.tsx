@@ -140,7 +140,7 @@ const Index = () => {
             <p className="text-xl text-muted-foreground mb-8">
               Join the digital transformation revolution and watch your business reach new heights
             </p>
-            <Button size="lg" className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-12">
+            <Button size="lg" className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-12" onClick={() => navigate('/contact')}>
               <Zap className="w-5 h-5 mr-2" />
               Start Your Journey
               <Target className="w-5 h-5 ml-2" />
