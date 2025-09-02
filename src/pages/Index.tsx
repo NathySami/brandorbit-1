@@ -4,45 +4,34 @@ import Navigation from "@/components/Navigation";
 import AnimatedOrb from "@/components/AnimatedOrb";
 import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Search, Megaphone, Settings, Laptop } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
 const Index = () => {
   const navigate = useNavigate();
-  
-  const services = [
-    {
-      icon: <Code className="w-6 h-6" />,
-      title: "Web Design & Development",
-      description: "Cutting-edge websites that captivate and convert"
-    },
-    {
-      icon: <Settings className="w-6 h-6" />,
-      title: "ERP Management",
-      description: "Streamline operations with intelligent systems"
-    },
-    {
-      icon: <Search className="w-6 h-6" />,
-      title: "SEO Management",
-      description: "Dominate search results and drive organic growth"
-    },
-    {
-      icon: <Megaphone className="w-6 h-6" />,
-      title: "Digital Promotion",
-      description: "Amplify your brand across all digital channels"
-    },
-    {
-      icon: <Sparkles className="w-6 h-6" />,
-      title: "Digital Preset Upgrades",
-      description: "Transform your digital presence instantly"
-    },
-    {
-      icon: <Laptop className="w-6 h-6" />,
-      title: "Business Digital Makeover",
-      description: "Complete digital transformation for your business"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-space">
+  const services = [{
+    icon: <Code className="w-6 h-6" />,
+    title: "Web Design & Development",
+    description: "Cutting-edge websites that captivate and convert"
+  }, {
+    icon: <Settings className="w-6 h-6" />,
+    title: "ERP Management",
+    description: "Streamline operations with intelligent systems"
+  }, {
+    icon: <Search className="w-6 h-6" />,
+    title: "SEO Management",
+    description: "Dominate search results and drive organic growth"
+  }, {
+    icon: <Megaphone className="w-6 h-6" />,
+    title: "Digital Promotion",
+    description: "Amplify your brand across all digital channels"
+  }, {
+    icon: <Sparkles className="w-6 h-6" />,
+    title: "Digital Preset Upgrades",
+    description: "Transform your digital presence instantly"
+  }, {
+    icon: <Laptop className="w-6 h-6" />,
+    title: "Business Digital Makeover",
+    description: "Complete digital transformation for your business"
+  }];
+  return <div className="min-h-screen bg-gradient-space">
       <Navigation />
       
       {/* Hero Section */}
@@ -64,22 +53,13 @@ const Index = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button 
-                  size="lg" 
-                  onClick={() => navigate('/contact')}
-                  className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8"
-                >
+                <Button size="lg" onClick={() => navigate('/contact')} className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8">
                   <Rocket className="w-5 h-5 mr-2" />
                   Launch Your Brand
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
                 
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  onClick={() => navigate('/services')}
-                  className="border-primary/50 hover:bg-primary/10 text-lg px-8"
-                >
+                <Button size="lg" variant="outline" onClick={() => navigate('/services')} className="border-primary/50 hover:bg-primary/10 text-lg px-8">
                   <Globe className="w-5 h-5 mr-2" />
                   Explore Services
                 </Button>
@@ -87,11 +67,11 @@ const Index = () => {
               
               <div className="flex items-center justify-center lg:justify-start space-x-8 pt-8">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-white">500+</div>
-                  <div className="text-sm text-muted-foreground">Brands Transformed</div>
+                  
+                  
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-300">98%</div>
+                  <div className="text-2xl font-bold text-gray-300 px-0 py-0 my-0 mx-0">98%</div>
                   <div className="text-sm text-muted-foreground">Success Rate</div>
                 </div>
                 <div className="text-center">
@@ -101,7 +81,9 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="flex justify-center lg:justify-end fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <div className="flex justify-center lg:justify-end fade-in-up" style={{
+            animationDelay: '0.3s'
+          }}>
               <AnimatedOrb />
             </div>
           </div>
@@ -109,8 +91,12 @@ const Index = () => {
         
         {/* Floating elements */}
         <div className="absolute top-1/4 left-1/12 w-2 h-2 bg-white rounded-full float-animation"></div>
-        <div className="absolute top-1/3 right-1/12 w-1 h-1 bg-gray-300 rounded-full float-animation" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-1/4 left-1/6 w-1.5 h-1.5 bg-gray-400 rounded-full float-animation" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/3 right-1/12 w-1 h-1 bg-gray-300 rounded-full float-animation" style={{
+        animationDelay: '2s'
+      }}></div>
+        <div className="absolute bottom-1/4 left-1/6 w-1.5 h-1.5 bg-gray-400 rounded-full float-animation" style={{
+        animationDelay: '4s'
+      }}></div>
       </section>
 
       {/* Services Section */}
@@ -126,8 +112,9 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
+            {services.map((service, index) => <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up" style={{
+            animationDelay: `${index * 0.1}s`
+          }}>
                 <div className="text-white group-hover:text-gray-300 transition-colors duration-300 mb-4">
                   {service.icon}
                 </div>
@@ -137,8 +124,7 @@ const Index = () => {
                 <p className="text-muted-foreground">
                   {service.description}
                 </p>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -162,8 +148,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
