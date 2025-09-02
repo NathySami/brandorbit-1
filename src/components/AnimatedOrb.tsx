@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import SplineLoader from '@splinetool/loader';
 
 const AnimatedOrb = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,24 +24,14 @@ const AnimatedOrb = () => {
     const scene = new THREE.Scene();
     sceneRef.current = scene;
 
-    // Add some basic geometry while we work on loading your Spline model
-    const geometry = new THREE.SphereGeometry(200, 32, 32);
-    const material = new THREE.MeshPhongMaterial({ 
-      color: 0x4f46e5,
-      transparent: true,
-      opacity: 0.8,
-      wireframe: false
-    });
-    const sphere = new THREE.Mesh(geometry, material);
-    scene.add(sphere);
-
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(500, 500, 500);
-    scene.add(directionalLight);
+    // spline scene
+    const loader = new SplineLoader();
+    loader.load(
+      'https://prod.spline.design/leQrEDkVcqw9VqkC/scene.splinecode',
+      (splineScene) => {
+        scene.add(splineScene);
+      }
+    );
 
     // renderer
     const renderer = new THREE.WebGLRenderer({ 
