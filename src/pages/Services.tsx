@@ -43,7 +43,7 @@ const Services = () => {
         "Community Management",
         "Analytics & Reporting"
       ],
-      price: "Starting at 2,499 ETB"
+      price: "Starting at 4,999 ETB"
     },
     {
       icon: <Laptop className="w-8 h-8" />,
