@@ -4,8 +4,65 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Navigation from "@/components/Navigation";
 import { MapPin, Phone, Mail, Clock, Send, MessageCircle, Calendar, Globe } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { toast } from "sonner";
+import { useState } from "react";
+
+const contactSchema = z.object({
+  firstName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters").trim(),
+  lastName: z.string().min(1, "Last name is required").max(50, "Last name must be less than 50 characters").trim(),
+  email: z.string().email("Invalid email address").max(100, "Email must be less than 100 characters"),
+  phone: z.string().regex(/^(\+?[0-9\s()-]*)?$/, "Invalid phone number format").max(20, "Phone must be less than 20 characters").optional().or(z.literal("")),
+  company: z.string().max(100, "Company name must be less than 100 characters").optional(),
+  website: z.string().max(200, "Website must be less than 200 characters").optional(),
+  service: z.string().optional(),
+  budget: z.string().optional(),
+  timeline: z.string().optional(),
+  message: z.string().min(10, "Project details must be at least 10 characters").max(5000, "Project details must be less than 5000 characters").trim(),
+  newsletter: z.boolean().optional(),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      company: "",
+      website: "",
+      service: "",
+      budget: "",
+      timeline: "",
+      message: "",
+      newsletter: false,
+    },
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Form data is validated by zod schema
+      // Here you would typically send to a backend API
+      console.log("Form submitted with validated data");
+      
+      toast.success("Message sent successfully! We'll get back to you within 24 hours.");
+      form.reset();
+    } catch (error) {
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const contactInfo = [
     {
       icon: <MapPin className="w-6 h-6" />,
@@ -85,95 +142,218 @@ const Contact = () => {
                 </p>
               </div>
 
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">First Name *</label>
-                    <Input placeholder="John" className="bg-background/50 border-border/50 focus:border-primary/50" />
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="John" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Doe" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Last Name *</label>
-                    <Input placeholder="Doe" className="bg-background/50 border-border/50 focus:border-primary/50" />
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email Address *</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="john@company.com" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="+1 (555) 123-4567" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Email Address *</label>
-                    <Input type="email" placeholder="john@company.com" className="bg-background/50 border-border/50 focus:border-primary/50" />
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="company"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Company Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your Company" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="website"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Website</FormLabel>
+                          <FormControl>
+                            <Input placeholder="www.yoursite.com" className="bg-background/50 border-border/50 focus:border-primary/50" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Phone Number</label>
-                    <Input placeholder="+1 (555) 123-4567" className="bg-background/50 border-border/50 focus:border-primary/50" />
-                  </div>
-                </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Company Name</label>
-                    <Input placeholder="Your Company" className="bg-background/50 border-border/50 focus:border-primary/50" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Website</label>
-                    <Input placeholder="www.yoursite.com" className="bg-background/50 border-border/50 focus:border-primary/50" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Service Interested In</label>
-                  <select className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50">
-                    <option value="">Select a service</option>
-                    {services.map((service, index) => (
-                      <option key={index} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Project Budget</label>
-                  <select className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50">
-                    <option value="">Select budget range</option>
-                    <option value="under-5k">Under $5,000</option>
-                    <option value="5k-10k">$5,000 - $10,000</option>
-                    <option value="10k-25k">$10,000 - $25,000</option>
-                    <option value="25k-50k">$25,000 - $50,000</option>
-                    <option value="50k-plus">$50,000+</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Project Timeline</label>
-                  <select className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50">
-                    <option value="">Select timeline</option>
-                    <option value="asap">ASAP</option>
-                    <option value="1-month">Within 1 month</option>
-                    <option value="2-3-months">2-3 months</option>
-                    <option value="3-6-months">3-6 months</option>
-                    <option value="6-plus-months">6+ months</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Project Details *</label>
-                  <Textarea 
-                    placeholder="Tell us about your project, goals, and any specific requirements..."
-                    rows={6}
-                    className="bg-background/50 border-border/50 focus:border-primary/50"
+                  <FormField
+                    control={form.control}
+                    name="service"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Service Interested In</FormLabel>
+                        <FormControl>
+                          <select 
+                            className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50"
+                            {...field}
+                          >
+                            <option value="">Select a service</option>
+                            {services.map((service, index) => (
+                              <option key={index} value={service}>{service}</option>
+                            ))}
+                          </select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
-                </div>
 
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="newsletter" className="w-4 h-4" />
-                  <label htmlFor="newsletter" className="text-sm text-muted-foreground">
-                    Subscribe to our newsletter for digital marketing insights and updates
-                  </label>
-                </div>
+                  <FormField
+                    control={form.control}
+                    name="budget"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Project Budget</FormLabel>
+                        <FormControl>
+                          <select 
+                            className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50"
+                            {...field}
+                          >
+                            <option value="">Select budget range</option>
+                            <option value="under-5k">Under $5,000</option>
+                            <option value="5k-10k">$5,000 - $10,000</option>
+                            <option value="10k-25k">$10,000 - $25,000</option>
+                            <option value="25k-50k">$25,000 - $50,000</option>
+                            <option value="50k-plus">$50,000+</option>
+                          </select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <Button size="lg" className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
-                  <Send className="w-5 h-5 mr-2" />
-                  Send Message
-                </Button>
-              </form>
+                  <FormField
+                    control={form.control}
+                    name="timeline"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Project Timeline</FormLabel>
+                        <FormControl>
+                          <select 
+                            className="w-full p-3 bg-background/50 border border-border/50 rounded-lg focus:outline-none focus:border-primary/50"
+                            {...field}
+                          >
+                            <option value="">Select timeline</option>
+                            <option value="asap">ASAP</option>
+                            <option value="1-month">Within 1 month</option>
+                            <option value="2-3-months">2-3 months</option>
+                            <option value="3-6-months">3-6 months</option>
+                            <option value="6-plus-months">6+ months</option>
+                          </select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Project Details *</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Tell us about your project, goals, and any specific requirements..."
+                            rows={6}
+                            className="bg-background/50 border-border/50 focus:border-primary/50"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="newsletter"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center space-x-2">
+                          <FormControl>
+                            <input 
+                              type="checkbox" 
+                              id="newsletter" 
+                              className="w-4 h-4"
+                              checked={field.value}
+                              onChange={field.onChange}
+                            />
+                          </FormControl>
+                          <label htmlFor="newsletter" className="text-sm text-muted-foreground">
+                            Subscribe to our newsletter for digital marketing insights and updates
+                          </label>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button 
+                    type="submit" 
+                    size="lg" 
+                    className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300"
+                    disabled={isSubmitting}
+                  >
+                    <Send className="w-5 h-5 mr-2" />
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
+                </form>
+              </Form>
             </Card>
           </div>
 
