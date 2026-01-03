@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { ArrowRight, Code, Settings, Search, Laptop, Check, Star } from "lucide-react";
+import { ArrowRight, Code, Settings, Search, Laptop, Check, Star, Megaphone } from "lucide-react";
 
 const Services = () => {
   const services = [
@@ -31,6 +31,19 @@ const Services = () => {
         "Performance Tracking"
       ],
       price: "Starting at 1,999 ETB"
+    },
+    {
+      icon: <Megaphone className="w-8 h-8" />,
+      title: "Social Media Management",
+      description: "Elevate your brand presence with comprehensive social media solutions",
+      features: [
+        "Graphic Design",
+        "Video Editing",
+        "Content Strategy",
+        "Community Management",
+        "Analytics & Reporting"
+      ],
+      price: "Starting at 2,499 ETB"
     },
     {
       icon: <Laptop className="w-8 h-8" />,
