@@ -1,35 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import { ArrowRight, Code, Settings, Search, Megaphone, Sparkles, Laptop, Check, Star } from "lucide-react";
+import { ArrowRight, Code, Settings, Search, Laptop, Check, Star } from "lucide-react";
 
 const Services = () => {
   const services = [
     {
       icon: <Code className="w-8 h-8" />,
-      title: "Web Design & Development",
-      description: "Cutting-edge websites that captivate and convert your audience",
+      title: "Web Design, Development & ERP Management",
+      description: "Cutting-edge websites and intelligent enterprise systems that streamline your operations",
       features: [
         "Responsive Design",
         "Modern Frameworks",
-        "Performance Optimization",
-        "User Experience Focus",
-        "Mobile-First Approach"
-      ],
-      price: "Starting at 2,999 ETB"
-    },
-    {
-      icon: <Settings className="w-8 h-8" />,
-      title: "ERP Management",
-      description: "Streamline operations with intelligent enterprise systems",
-      features: [
         "Process Automation",
         "Data Integration",
         "Real-time Analytics",
-        "Custom Workflows",
-        "Scalable Solutions"
+        "Custom Workflows"
       ],
-      price: "Starting at 5,999 ETB"
+      price: "Starting at 4,999 ETB"
     },
     {
       icon: <Search className="w-8 h-8" />,
@@ -43,32 +31,6 @@ const Services = () => {
         "Performance Tracking"
       ],
       price: "Starting at 1,999 ETB"
-    },
-    {
-      icon: <Megaphone className="w-8 h-8" />,
-      title: "Digital Promotion",
-      description: "Amplify your brand across all digital channels",
-      features: [
-        "Social Media Marketing",
-        "PPC Advertising",
-        "Content Marketing",
-        "Email Campaigns",
-        "Influencer Partnerships"
-      ],
-      price: "Starting at 2,499 ETB"
-    },
-    {
-      icon: <Sparkles className="w-8 h-8" />,
-      title: "Digital Preset Upgrades",
-      description: "Transform your digital presence instantly",
-      features: [
-        "Brand Identity Refresh",
-        "Template Customization",
-        "Quick Implementation",
-        "Design System Setup",
-        "Asset Creation"
-      ],
-      price: "Starting at 999 ETB"
     },
     {
       icon: <Laptop className="w-8 h-8" />,
