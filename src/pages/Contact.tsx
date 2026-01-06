@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const contactSchema = z.object({
   firstName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters").trim(),
@@ -50,13 +51,19 @@ const Contact = () => {
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     try {
-      // Form data is validated by zod schema
-      // Here you would typically send to a backend API
-      console.log("Form submitted with validated data");
+      const { error } = await supabase.functions.invoke("send-contact-notification", {
+        body: data,
+      });
+
+      if (error) {
+        console.error("Error sending notification:", error);
+        throw error;
+      }
       
       toast.success("Message sent successfully! We'll get back to you within 24 hours.");
       form.reset();
     } catch (error) {
+      console.error("Failed to send message:", error);
       toast.error("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
