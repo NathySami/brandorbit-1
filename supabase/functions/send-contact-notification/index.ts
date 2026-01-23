@@ -20,6 +20,28 @@ interface ContactFormData {
   timeline?: string;
   message: string;
   newsletter?: boolean;
+  turnstileToken: string;
+}
+
+async function verifyTurnstileToken(token: string): Promise<boolean> {
+  const secretKey = Deno.env.get("TURNSTILE_SECRET_KEY");
+  if (!secretKey) {
+    console.error("TURNSTILE_SECRET_KEY not configured");
+    return false;
+  }
+
+  const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      secret: secretKey,
+      response: token,
+    }),
+  });
+
+  const data = await response.json();
+  console.log("Turnstile verification result:", data.success);
+  return data.success === true;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -31,6 +53,23 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const formData: ContactFormData = await req.json();
     console.log("Received contact form submission:", formData.email);
+
+    // Verify Turnstile CAPTCHA token
+    const { turnstileToken } = formData;
+    if (!turnstileToken) {
+      return new Response(
+        JSON.stringify({ error: "CAPTCHA verification required" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    const isValidToken = await verifyTurnstileToken(turnstileToken);
+    if (!isValidToken) {
+      return new Response(
+        JSON.stringify({ error: "CAPTCHA verification failed" }),
+        { status: 403, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
 
     const { firstName, lastName, email, phone, company, website, service, budget, timeline, message, newsletter } = formData;
 

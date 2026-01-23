@@ -9,8 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 const contactSchema = z.object({
   firstName: z.string().min(1, "First name is required").max(50, "First name must be less than 50 characters").trim(),
@@ -30,6 +31,8 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -49,10 +52,15 @@ const Contact = () => {
   });
 
   const onSubmit = async (data: ContactFormData) => {
+    if (!turnstileToken) {
+      toast.error("Please complete the CAPTCHA verification");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const { error } = await supabase.functions.invoke("send-contact-notification", {
-        body: data,
+        body: { ...data, turnstileToken },
       });
 
       if (error) {
@@ -62,9 +70,12 @@ const Contact = () => {
       
       toast.success("Message sent successfully! We'll get back to you within 24 hours.");
       form.reset();
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
     } catch (error) {
       console.error("Failed to send message:", error);
       toast.error("Failed to send message. Please try again.");
+      turnstileRef.current?.reset();
     } finally {
       setIsSubmitting(false);
     }
@@ -350,11 +361,22 @@ const Contact = () => {
                     )}
                   />
 
+                  <div className="flex justify-center">
+                    <Turnstile
+                      ref={turnstileRef}
+                      siteKey="0x4AAAAAAAgfZHCBvC0bKGFP"
+                      onSuccess={setTurnstileToken}
+                      onError={() => setTurnstileToken(null)}
+                      onExpire={() => setTurnstileToken(null)}
+                      options={{ theme: "dark" }}
+                    />
+                  </div>
+
                   <Button 
                     type="submit" 
                     size="lg" 
                     className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !turnstileToken}
                   >
                     <Send className="w-5 h-5 mr-2" />
                     {isSubmitting ? "Sending..." : "Send Message"}
