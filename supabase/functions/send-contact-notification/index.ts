@@ -23,6 +23,25 @@ interface ContactFormData {
   turnstileToken: string;
 }
 
+// HTML escape function to prevent XSS in email templates
+function escapeHtml(unsafe: string): string {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Sanitize URL to prevent injection
+function sanitizeUrl(url: string): string {
+  const sanitized = url.replace(/[<>"']/g, '');
+  if (sanitized.startsWith("http://") || sanitized.startsWith("https://")) {
+    return sanitized;
+  }
+  return `https://${sanitized}`;
+}
+
 async function verifyTurnstileToken(token: string): Promise<boolean> {
   const secretKey = Deno.env.get("TURNSTILE_SECRET_KEY");
   if (!secretKey) {
@@ -52,7 +71,8 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     const formData: ContactFormData = await req.json();
-    console.log("Received contact form submission:", formData.email);
+    // Log without PII - only log that a submission was received
+    console.log("Received contact form submission");
 
     // Verify Turnstile CAPTCHA token
     const { turnstileToken } = formData;
@@ -72,6 +92,19 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     const { firstName, lastName, email, phone, company, website, service, budget, timeline, message, newsletter } = formData;
+
+    // Escape all user inputs for safe HTML rendering
+    const safeFirstName = escapeHtml(firstName);
+    const safeLastName = escapeHtml(lastName);
+    const safeEmail = escapeHtml(email);
+    const safePhone = phone ? escapeHtml(phone) : "";
+    const safeCompany = company ? escapeHtml(company) : "";
+    const safeWebsite = website ? escapeHtml(website) : "";
+    const safeWebsiteUrl = website ? sanitizeUrl(website) : "";
+    const safeService = service ? escapeHtml(service) : "";
+    const safeBudget = budget ? escapeHtml(budget) : "";
+    const safeTimeline = timeline ? escapeHtml(timeline) : "";
+    const safeMessage = escapeHtml(message);
 
     const submittedAt = new Date().toLocaleString("en-US", {
       timeZone: "America/Los_Angeles",
@@ -109,51 +142,51 @@ const handler = async (req: Request): Promise<Response> => {
           <div class="content">
             <div class="field">
               <div class="label">Name</div>
-              <div class="value">${firstName} ${lastName}</div>
+              <div class="value">${safeFirstName} ${safeLastName}</div>
             </div>
             <div class="field">
               <div class="label">Email</div>
-              <div class="value"><a href="mailto:${email}">${email}</a></div>
+              <div class="value"><a href="mailto:${safeEmail}">${safeEmail}</a></div>
             </div>
             ${phone ? `
             <div class="field">
               <div class="label">Phone</div>
-              <div class="value"><a href="tel:${phone}">${phone}</a></div>
+              <div class="value"><a href="tel:${safePhone}">${safePhone}</a></div>
             </div>
             ` : ""}
             ${company ? `
             <div class="field">
               <div class="label">Company</div>
-              <div class="value">${company}</div>
+              <div class="value">${safeCompany}</div>
             </div>
             ` : ""}
             ${website ? `
             <div class="field">
               <div class="label">Website</div>
-              <div class="value"><a href="${website.startsWith("http") ? website : `https://${website}`}" target="_blank">${website}</a></div>
+              <div class="value"><a href="${safeWebsiteUrl}" target="_blank">${safeWebsite}</a></div>
             </div>
             ` : ""}
             ${service ? `
             <div class="field">
               <div class="label">Service Interested In</div>
-              <div class="value">${service}</div>
+              <div class="value">${safeService}</div>
             </div>
             ` : ""}
             ${budget ? `
             <div class="field">
               <div class="label">Budget Range</div>
-              <div class="value">${budget}</div>
+              <div class="value">${safeBudget}</div>
             </div>
             ` : ""}
             ${timeline ? `
             <div class="field">
               <div class="label">Timeline</div>
-              <div class="value">${timeline}</div>
+              <div class="value">${safeTimeline}</div>
             </div>
             ` : ""}
             <div class="field">
               <div class="label">Project Details</div>
-              <div class="message-box">${message.replace(/\n/g, "<br>")}</div>
+              <div class="message-box">${safeMessage.replace(/\n/g, "<br>")}</div>
             </div>
             <div class="field">
               <div class="label">Newsletter Subscription</div>
@@ -204,7 +237,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p>We've received your message and are excited to connect</p>
           </div>
           <div class="content">
-            <p class="greeting">Dear ${firstName},</p>
+            <p class="greeting">Dear ${safeFirstName},</p>
             <p class="message">
               Thank you for contacting Brand Orbit! We've successfully received your inquiry and our team is already reviewing your project details.
             </p>
@@ -218,24 +251,24 @@ const handler = async (req: Request): Promise<Response> => {
               ${service ? `
               <div class="summary-item">
                 <span class="summary-label">Service:</span>
-                <span class="summary-value">${service}</span>
+                <span class="summary-value">${safeService}</span>
               </div>
               ` : ""}
               ${budget ? `
               <div class="summary-item">
                 <span class="summary-label">Budget:</span>
-                <span class="summary-value">${budget}</span>
+                <span class="summary-value">${safeBudget}</span>
               </div>
               ` : ""}
               ${timeline ? `
               <div class="summary-item">
                 <span class="summary-label">Timeline:</span>
-                <span class="summary-value">${timeline}</span>
+                <span class="summary-value">${safeTimeline}</span>
               </div>
               ` : ""}
               <div class="summary-item">
                 <span class="summary-label">Message:</span>
-                <span class="summary-value">${message.length > 100 ? message.substring(0, 100) + "..." : message}</span>
+                <span class="summary-value">${safeMessage.length > 100 ? safeMessage.substring(0, 100) + "..." : safeMessage}</span>
               </div>
             </div>
             
@@ -265,7 +298,7 @@ const handler = async (req: Request): Promise<Response> => {
       resend.emails.send({
         from: "Brand Orbit <onboarding@resend.dev>",
         to: ["brandorbit1@gmail.com"],
-        subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+        subject: `New Contact Form Submission from ${safeFirstName} ${safeLastName}`,
         html: notificationEmailHtml,
         reply_to: email,
       }),
@@ -277,23 +310,23 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     ]);
 
-    console.log("Notification email sent:", notificationResponse);
-    console.log("Confirmation email sent:", confirmationResponse);
+    // Log success without exposing API response details
+    console.log("Notification email sent successfully");
+    console.log("Confirmation email sent successfully");
 
     return new Response(JSON.stringify({ 
       success: true, 
-      data: { 
-        notification: notificationResponse, 
-        confirmation: confirmationResponse 
-      } 
+      message: "Contact form submitted successfully"
     }), {
       status: 200,
       headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (error: any) {
+    // Log detailed error for debugging (server-side only)
     console.error("Error in send-contact-notification function:", error);
+    // Return generic error message to client
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: "Failed to send contact notification. Please try again later." }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },
