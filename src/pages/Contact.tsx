@@ -364,7 +364,7 @@ const Contact = () => {
                   <div className="flex justify-center">
                     <Turnstile
                       ref={turnstileRef}
-                      siteKey="0x4AAAAAAAgfZHCBvC0bKGFP"
+                      siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || ""}
                       onSuccess={setTurnstileToken}
                       onError={() => setTurnstileToken(null)}
                       onExpire={() => setTurnstileToken(null)}
