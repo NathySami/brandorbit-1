@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
-import { MapPin, Phone, Mail, Clock, MessageCircle, Calendar, Globe } from "lucide-react";
+import { MapPin, Mail, Clock, MessageCircle, Calendar, Globe } from "lucide-react";
 
 const Contact = () => {
   const contactInfo = [
@@ -10,12 +10,6 @@ const Contact = () => {
       title: "Visit Us",
       details: ["Addis Ababa, Ethiopia"],
       action: "Get Directions"
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "Call Us",
-      details: ["+251941438850", "+251942409721", "Mon-Fri 9AM-6PM PST"],
-      action: "Call Now"
     },
     {
       icon: <Mail className="w-6 h-6" />,
