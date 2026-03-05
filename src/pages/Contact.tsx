@@ -30,7 +30,7 @@ const Contact = () => {
       city: "Addis Ababa",
       address: "COMING SOON !!",
       phone: "+251941438850",
-      email: "brandorbit1@gmail.com"
+      email: "officialbrandorbit@gmail.com"
     }
   ];
 
