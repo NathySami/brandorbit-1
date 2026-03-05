@@ -166,10 +166,10 @@ const Contact = () => {
                     Schedule a Call
                   </Button>
                 </a>
-                <Button variant="outline" className="w-full justify-start border-primary/50 hover:bg-primary/10">
-                  <Globe className="w-4 h-4 mr-2" />
-                  Virtual Consultation
-                </Button>
+                
+
+
+                
               </div>
             </Card>
 
