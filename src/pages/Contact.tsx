@@ -14,7 +14,7 @@ const Contact = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email Us",
-      details: ["brandorbit1@gmail.com"],
+      details: ["officialbrandorbit@gmail.com"],
       action: "Send Email"
     },
     {
