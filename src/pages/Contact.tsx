@@ -160,10 +160,12 @@ const Contact = () => {
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Live Chat Support
                 </Button>
-                <Button variant="outline" className="w-full justify-start border-primary/50 hover:bg-primary/10">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  Schedule a Call
-                </Button>
+                <a href="tel:+251942409721" className="w-full">
+                  <Button variant="outline" className="w-full justify-start border-primary/50 hover:bg-primary/10">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Schedule a Call
+                  </Button>
+                </a>
                 <Button variant="outline" className="w-full justify-start border-primary/50 hover:bg-primary/10">
                   <Globe className="w-4 h-4 mr-2" />
                   Virtual Consultation
