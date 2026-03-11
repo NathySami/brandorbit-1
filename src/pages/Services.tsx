@@ -43,7 +43,7 @@ const Services = () => {
         "Training & Support",
         "Ongoing Optimization"
       ],
-      price: "Starting at 9,999 ETB"
+      price: "Starting at 24,999 ETB"
     }
   ];
 
