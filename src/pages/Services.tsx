@@ -201,24 +201,6 @@ const Services = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-orbit"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto fade-in-up">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-              Ready to Launch Your <span className="text-gradient">Digital Transformation?</span>
-            </h2>
-            <p className="text-xl text-muted-foreground mb-8">
-              Let's discuss how we can elevate your brand to new heights
-            </p>
-            <Button size="lg" className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-12">
-              Get Free Consultation
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
