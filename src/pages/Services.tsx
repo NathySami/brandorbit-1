@@ -123,11 +123,7 @@ const Services = () => {
                 </div>
                 
                 <div className="border-t border-border/50 pt-6">
-                  <div className="text-lg font-semibold text-white mb-4">{service.price}</div>
-                  <Button className="w-full bg-gradient-cosmic hover:shadow-glow transition-all duration-300">
-                    Get Started
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
+                  <div className="text-lg font-semibold text-white">{service.price}</div>
                 </div>
               </Card>
             ))}
