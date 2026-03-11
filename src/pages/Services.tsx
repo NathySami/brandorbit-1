@@ -17,20 +17,7 @@ const Services = () => {
         "Real-time Analytics",
         "Custom Workflows"
       ],
-      price: "Starting at 4,999 ETB"
-    },
-    {
-      icon: <Search className="w-8 h-8" />,
-      title: "SEO Management",
-      description: "Dominate search results and drive organic growth",
-      features: [
-        "Keyword Research",
-        "On-page Optimization",
-        "Technical SEO",
-        "Link Building",
-        "Performance Tracking"
-      ],
-      price: "Starting at 1,999 ETB"
+      price: "Starting at 9,999 ETB"
     },
     {
       icon: <Megaphone className="w-8 h-8" />,
@@ -43,7 +30,7 @@ const Services = () => {
         "Community Management",
         "Analytics & Reporting"
       ],
-      price: "Starting at 4,999 ETB"
+      price: "Starting at 9,999 ETB"
     },
     {
       icon: <Laptop className="w-8 h-8" />,
