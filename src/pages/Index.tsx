@@ -6,6 +6,22 @@ import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Sear
 import { useNavigate } from "react-router-dom";
 const Index = () => {
   const navigate = useNavigate();
+
+  // Scroll-based reveal
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('scroll-revealed');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
   const services = [{
     icon: <Code className="w-6 h-6" />,
     title: "Web Design & Development",
