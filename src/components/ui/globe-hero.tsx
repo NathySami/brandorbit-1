@@ -13,19 +13,67 @@ interface DotGlobeHeroProps {
   children?: React.ReactNode;
 }
 
+const createTubeLine = (
+  curve: THREE.Vector3[],
+  tubeRadius: number,
+  material: THREE.Material
+) => {
+  const path = new THREE.CatmullRomCurve3(curve, false);
+  const geometry = new THREE.TubeGeometry(path, 64, tubeRadius, 6, false);
+  return new THREE.Mesh(geometry, material);
+};
+
+const OrbitRing: React.FC<{ radius: number }> = ({ radius }) => {
+  const ringRef = useRef<THREE.Group>(null!);
+
+  const ring = useMemo(() => {
+    const orbitRadius = radius * 1.5;
+    const points: THREE.Vector3[] = [];
+    for (let i = 0; i <= 128; i++) {
+      const theta = (2 * Math.PI * i) / 128;
+      points.push(
+        new THREE.Vector3(
+          orbitRadius * Math.cos(theta),
+          0,
+          orbitRadius * Math.sin(theta)
+        )
+      );
+    }
+    const material = new THREE.MeshBasicMaterial({
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.5,
+    });
+    return createTubeLine(points, 0.012, material);
+  }, [radius]);
+
+  useFrame((_, delta) => {
+    if (ringRef.current) {
+      ringRef.current.rotation.y += delta * 0.15;
+    }
+  });
+
+  return (
+    <group ref={ringRef} rotation={[Math.PI * 0.35, 0.3, 0.15]}>
+      <primitive object={ring} />
+    </group>
+  );
+};
+
 const Globe: React.FC<{
   rotationSpeed: number;
   radius: number;
 }> = ({ rotationSpeed, radius }) => {
   const groupRef = useRef<THREE.Group>(null!);
 
-  const lines = useMemo(() => {
-    const material = new THREE.LineBasicMaterial({
+  const meshes = useMemo(() => {
+    const material = new THREE.MeshBasicMaterial({
       color: "#ffffff",
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.6,
     });
-    const result: THREE.Line[] = [];
+    const tubeRadius = 0.008;
+    const result: THREE.Mesh[] = [];
 
     // Latitude lines
     const latCount = 12;
@@ -42,7 +90,7 @@ const Globe: React.FC<{
           )
         );
       }
-      result.push(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
+      result.push(createTubeLine(points, tubeRadius, material));
     }
 
     // Longitude lines
@@ -60,7 +108,7 @@ const Globe: React.FC<{
           )
         );
       }
-      result.push(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
+      result.push(createTubeLine(points, tubeRadius, material));
     }
 
     return result;
@@ -75,8 +123,8 @@ const Globe: React.FC<{
 
   return (
     <group ref={groupRef}>
-      {lines.map((line, i) => (
-        <primitive key={i} object={line} />
+      {meshes.map((mesh, i) => (
+        <primitive key={i} object={mesh} />
       ))}
     </group>
   );
@@ -97,10 +145,11 @@ const DotGlobeHero = React.forwardRef<HTMLDivElement, DotGlobeHeroProps>(
         <div className="absolute inset-0 z-0">
           <Canvas>
             <PerspectiveCamera makeDefault position={[0, 0, 3]} />
-            <ambientLight intensity={0.3} />
-            <pointLight position={[10, 10, 10]} intensity={0.5} />
-            <pointLight position={[-10, -10, -10]} intensity={0.3} />
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} intensity={0.8} />
+            <pointLight position={[-10, -10, -10]} intensity={0.4} />
             <Globe rotationSpeed={rotationSpeed} radius={globeRadius} />
+            <OrbitRing radius={globeRadius} />
           </Canvas>
         </div>
       </div>
