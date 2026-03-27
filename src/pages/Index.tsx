@@ -81,10 +81,10 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="flex justify-center lg:justify-end fade-in-up" style={{
+            <div className="flex justify-center lg:justify-end fade-in-up w-full h-[400px] lg:h-[500px]" style={{
             animationDelay: '0.3s'
           }}>
-              <AnimatedOrb />
+              <HeroModel />
             </div>
           </div>
         </div>
