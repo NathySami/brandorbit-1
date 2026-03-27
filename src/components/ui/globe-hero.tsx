@@ -23,6 +23,62 @@ const createTubeLine = (
   return new THREE.Mesh(geometry, material);
 };
 
+/** Floating stars scattered across the scene */
+const Stars: React.FC<{ count?: number }> = ({ count = 200 }) => {
+  const groupRef = useRef<THREE.Group>(null!);
+
+  const starData = useMemo(() => {
+    const positions: number[] = [];
+    const speeds: number[] = [];
+    for (let i = 0; i < count; i++) {
+      positions.push(
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 10
+      );
+      speeds.push(0.2 + Math.random() * 0.8);
+    }
+    return { positions: new Float32Array(positions), speeds };
+  }, [count]);
+
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const time = state.clock.elapsedTime;
+    const posAttr = groupRef.current.children[0] as THREE.Points;
+    const positions = (posAttr.geometry as THREE.BufferGeometry).attributes.position;
+    for (let i = 0; i < count; i++) {
+      const baseY = starData.positions[i * 3 + 1];
+      (positions as THREE.BufferAttribute).setY(
+        i,
+        baseY + Math.sin(time * starData.speeds[i] + i) * 0.15
+      );
+    }
+    positions.needsUpdate = true;
+  });
+
+  return (
+    <group ref={groupRef}>
+      <points>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={count}
+            array={new Float32Array(starData.positions)}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.025}
+          color="#ffffff"
+          sizeAttenuation
+          transparent
+          opacity={0.9}
+        />
+      </points>
+    </group>
+  );
+};
+
 const OrbitRing: React.FC<{ radius: number }> = ({ radius }) => {
   const ringRef = useRef<THREE.Group>(null!);
 
@@ -40,9 +96,9 @@ const OrbitRing: React.FC<{ radius: number }> = ({ radius }) => {
       );
     }
     const material = new THREE.MeshBasicMaterial({
-      color: "#ffffff",
+      color: "#aaccff",
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.6,
     });
     return createTubeLine(points, 0.022, material);
   }, [radius]);
@@ -67,10 +123,13 @@ const Globe: React.FC<{
   const groupRef = useRef<THREE.Group>(null!);
 
   const meshes = useMemo(() => {
-    const material = new THREE.MeshBasicMaterial({
-      color: "#ffffff",
+    // Emissive material so Bloom picks it up
+    const material = new THREE.MeshStandardMaterial({
+      color: "#88bbff",
+      emissive: "#4488ff",
+      emissiveIntensity: 0.6,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.7,
     });
     const tubeRadius = 0.008;
     const result: THREE.Mesh[] = [];
@@ -145,11 +204,12 @@ const DotGlobeHero = React.forwardRef<HTMLDivElement, DotGlobeHeroProps>(
         <div className="absolute inset-0 z-0">
           <Canvas>
             <PerspectiveCamera makeDefault position={[0, 0, 3]} />
-            <ambientLight intensity={0.5} />
+            <ambientLight intensity={0.3} />
             <pointLight position={[10, 10, 10]} intensity={0.8} />
             <pointLight position={[-10, -10, -10]} intensity={0.4} />
             <Globe rotationSpeed={rotationSpeed} radius={globeRadius} />
             <OrbitRing radius={globeRadius} />
+            <Stars count={250} />
           </Canvas>
         </div>
       </div>
