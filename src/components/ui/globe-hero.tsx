@@ -44,7 +44,7 @@ const OrbitRing: React.FC<{ radius: number }> = ({ radius }) => {
       transparent: true,
       opacity: 0.5,
     });
-    return createTubeLine(points, 0.012, material);
+    return createTubeLine(points, 0.022, material);
   }, [radius]);
 
   useFrame((_, delta) => {
