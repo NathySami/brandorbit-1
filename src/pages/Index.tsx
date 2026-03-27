@@ -1,28 +1,11 @@
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import HeroModel from "@/components/HeroModel";
+import AnimatedOrb from "@/components/AnimatedOrb";
 import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Search, Megaphone, Settings, Laptop } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 const Index = () => {
   const navigate = useNavigate();
-
-  // Scroll-based reveal
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('scroll-revealed');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-    document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
   const services = [{
     icon: <Code className="w-6 h-6" />,
     title: "Web Design & Development",
@@ -98,10 +81,10 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="flex justify-center lg:justify-end fade-in-up w-full h-[400px] lg:h-[500px]" style={{
+            <div className="flex justify-center lg:justify-end fade-in-up" style={{
             animationDelay: '0.3s'
           }}>
-              <HeroModel />
+              <AnimatedOrb />
             </div>
           </div>
         </div>
@@ -129,7 +112,9 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-foreground/30 transition-all duration-300 hover:shadow-orbit group scroll-reveal cursor-pointer" onClick={() => navigate('/services')}>
+            {services.map((service, index) => <Card key={index} className="p-8 bg-card/50 backdrop-blur-sm border-border/50 hover:border-white/50 transition-all duration-300 hover:shadow-orbit group fade-in-up cursor-pointer" style={{
+            animationDelay: `${index * 0.1}s`
+          }} onClick={() => navigate('/services')}>
                 <div className="text-white group-hover:text-gray-300 transition-colors duration-300 mb-4">
                   {service.icon}
                 </div>
