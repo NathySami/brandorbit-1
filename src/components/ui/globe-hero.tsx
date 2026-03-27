@@ -19,8 +19,13 @@ const Globe: React.FC<{
 }> = ({ rotationSpeed, radius }) => {
   const groupRef = useRef<THREE.Group>(null!);
 
-  const wireframeGeometries = useMemo(() => {
-    const geometries: THREE.BufferGeometry[] = [];
+  const lines = useMemo(() => {
+    const material = new THREE.LineBasicMaterial({
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.35,
+    });
+    const result: THREE.Line[] = [];
 
     // Latitude lines
     const latCount = 12;
@@ -37,7 +42,7 @@ const Globe: React.FC<{
           )
         );
       }
-      geometries.push(new THREE.BufferGeometry().setFromPoints(points));
+      result.push(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
     }
 
     // Longitude lines
@@ -55,10 +60,10 @@ const Globe: React.FC<{
           )
         );
       }
-      geometries.push(new THREE.BufferGeometry().setFromPoints(points));
+      result.push(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), material));
     }
 
-    return geometries;
+    return result;
   }, [radius]);
 
   useFrame(() => {
@@ -70,15 +75,8 @@ const Globe: React.FC<{
 
   return (
     <group ref={groupRef}>
-      {wireframeGeometries.map((geo, i) => (
-        <line key={i} geometry={geo}>
-          <lineBasicMaterial
-            color="#ffffff"
-            transparent
-            opacity={0.35}
-            linewidth={1}
-          />
-        </line>
+      {lines.map((line, i) => (
+        <primitive key={i} object={line} />
       ))}
     </group>
   );
