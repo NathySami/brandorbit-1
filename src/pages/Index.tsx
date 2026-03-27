@@ -36,7 +36,7 @@ const Index = () => {
   ];
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-gradient-space scroll-smooth">
+    <div ref={containerRef} className="min-h-screen bg-gradient-space">
       <Navigation />
 
       {/* Hero Section with Globe */}
