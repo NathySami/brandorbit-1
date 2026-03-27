@@ -54,7 +54,7 @@ const OrbitRing: React.FC<{ radius: number }> = ({ radius }) => {
   });
 
   return (
-    <group ref={ringRef} rotation={[Math.PI * 0.35, 0.3, 0.15]}>
+    <group ref={ringRef} rotation={[Math.PI * 0.48, 0.05, 0.1]}>
       <primitive object={ring} />
     </group>
   );
