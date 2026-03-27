@@ -19,47 +19,67 @@ const Globe: React.FC<{
 }> = ({ rotationSpeed, radius }) => {
   const groupRef = useRef<THREE.Group>(null!);
 
-  const points = useMemo(() => {
-    const positions: number[] = [];
-    const count = 3000;
-    for (let i = 0; i < count; i++) {
-      const phi = Math.acos(2 * Math.random() - 1);
-      const theta = 2 * Math.PI * Math.random();
-      const x = radius * Math.sin(phi) * Math.cos(theta);
-      const y = radius * Math.sin(phi) * Math.sin(theta);
-      const z = radius * Math.cos(phi);
-      positions.push(x, y, z);
+  const wireframeGeometries = useMemo(() => {
+    const geometries: THREE.BufferGeometry[] = [];
+
+    // Latitude lines
+    const latCount = 12;
+    for (let i = 0; i <= latCount; i++) {
+      const phi = (Math.PI * i) / latCount;
+      const points: THREE.Vector3[] = [];
+      for (let j = 0; j <= 64; j++) {
+        const theta = (2 * Math.PI * j) / 64;
+        points.push(
+          new THREE.Vector3(
+            radius * Math.sin(phi) * Math.cos(theta),
+            radius * Math.cos(phi),
+            radius * Math.sin(phi) * Math.sin(theta)
+          )
+        );
+      }
+      geometries.push(new THREE.BufferGeometry().setFromPoints(points));
     }
-    return new Float32Array(positions);
+
+    // Longitude lines
+    const lonCount = 18;
+    for (let i = 0; i < lonCount; i++) {
+      const theta = (2 * Math.PI * i) / lonCount;
+      const points: THREE.Vector3[] = [];
+      for (let j = 0; j <= 64; j++) {
+        const phi = (Math.PI * j) / 64;
+        points.push(
+          new THREE.Vector3(
+            radius * Math.sin(phi) * Math.cos(theta),
+            radius * Math.cos(phi),
+            radius * Math.sin(phi) * Math.sin(theta)
+          )
+        );
+      }
+      geometries.push(new THREE.BufferGeometry().setFromPoints(points));
+    }
+
+    return geometries;
   }, [radius]);
 
   useFrame(() => {
     if (groupRef.current) {
       groupRef.current.rotation.y += rotationSpeed;
-      groupRef.current.rotation.x += rotationSpeed * 0.3;
-      groupRef.current.rotation.z += rotationSpeed * 0.1;
+      groupRef.current.rotation.x += rotationSpeed * 0.15;
     }
   });
 
   return (
     <group ref={groupRef}>
-      <points>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            count={points.length / 3}
-            array={points}
-            itemSize={3}
+      {wireframeGeometries.map((geo, i) => (
+        <line key={i} geometry={geo}>
+          <lineBasicMaterial
+            color="#ffffff"
+            transparent
+            opacity={0.35}
+            linewidth={1}
           />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.015}
-          color="#ffffff"
-          sizeAttenuation
-          transparent
-          opacity={0.8}
-        />
-      </points>
+        </line>
+      ))}
     </group>
   );
 };
