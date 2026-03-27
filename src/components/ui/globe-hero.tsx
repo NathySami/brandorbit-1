@@ -122,8 +122,9 @@ const Globe: React.FC<{
 }> = ({ rotationSpeed, radius }) => {
   const groupRef = useRef<THREE.Group>(null!);
 
+  const materialRef = useRef<THREE.MeshStandardMaterial>(null!);
+
   const meshes = useMemo(() => {
-    // Emissive material so Bloom picks it up
     const material = new THREE.MeshStandardMaterial({
       color: "#ffffff",
       emissive: "#ffffff",
@@ -131,6 +132,7 @@ const Globe: React.FC<{
       transparent: true,
       opacity: 0.75,
     });
+    materialRef.current = material;
     const tubeRadius = 0.008;
     const result: THREE.Mesh[] = [];
 
@@ -173,10 +175,15 @@ const Globe: React.FC<{
     return result;
   }, [radius]);
 
-  useFrame(() => {
+  useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.rotation.y += rotationSpeed;
       groupRef.current.rotation.x += rotationSpeed * 0.15;
+    }
+    if (materialRef.current) {
+      const t = state.clock.elapsedTime;
+      materialRef.current.emissiveIntensity = 0.5 + Math.sin(t * 1.5) * 0.35;
+      materialRef.current.opacity = 0.6 + Math.sin(t * 1.5) * 0.15;
     }
   });
 
