@@ -7,9 +7,6 @@ import { useMemo, useRef, useState, useEffect } from 'react';
 import * as THREE from 'three';
 import brandOrbitLogo from '@/assets/BrandOrbit_Logo.jpg';
 
-const TEXTUREMAP = { src: 'https://i.postimg.cc/XYwvXN8D/img-4.png' };
-const DEPTHMAP = { src: 'https://i.postimg.cc/2SHKQh2q/raw-4.webp' };
-
 const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -20,7 +17,6 @@ const vertexShader = `
 
 const fragmentShader = `
   uniform sampler2D uTexture;
-  uniform sampler2D uDepthMap;
   uniform vec2 uPointer;
   uniform float uProgress;
   uniform float uTime;
@@ -31,35 +27,42 @@ const fragmentShader = `
   }
 
   void main() {
-    float depth = texture2D(uDepthMap, vUv).r;
+    // Derive depth from logo luminance
+    vec4 baseColor = texture2D(uTexture, vUv);
+    float depth = dot(baseColor.rgb, vec3(0.299, 0.587, 0.114));
     
     // Parallax offset based on pointer and depth
-    float strength = 0.01;
+    float strength = 0.015;
     vec2 offset = depth * uPointer * strength;
     vec4 color = texture2D(uTexture, vUv + offset);
     
     // Halftone dot pattern
     float aspect = 1.0;
     vec2 tUv = vec2(vUv.x * aspect, vUv.y);
-    vec2 tiling = vec2(120.0);
+    vec2 tiling = vec2(80.0);
     vec2 tiledUv = mod(tUv * tiling, 2.0) - 1.0;
     float brightness = cellNoise(tUv * tiling / 2.0);
     float dist = length(tiledUv);
-    float dot = smoothstep(0.5, 0.49, dist) * brightness;
+    float dotVal = smoothstep(0.5, 0.49, dist) * brightness;
     
-    // Scan line flow effect
-    float flow = 1.0 - smoothstep(0.0, 0.02, abs(depth - uProgress));
-    vec3 mask = vec3(dot * flow) * vec3(10.0, 0.0, 0.0);
+    // Scan line flow effect  
+    float flow = 1.0 - smoothstep(0.0, 0.03, abs(depth - uProgress));
+    vec3 mask = vec3(dotVal * flow) * vec3(8.0, 1.5, 0.0);
     
     // Blend screen
     vec3 result = 1.0 - (1.0 - color.rgb) * (1.0 - mask);
     
-    // Scan line overlay
+    // Scan line overlay with glow
     float scanPos = uProgress;
-    float scanWidth = 0.05;
+    float scanWidth = 0.06;
     float scanLine = smoothstep(0.0, scanWidth, abs(vUv.y - scanPos));
-    vec3 redOverlay = vec3(1.0, 0.0, 0.0) * (1.0 - scanLine) * 0.15;
-    result += redOverlay;
+    vec3 glowOverlay = vec3(1.0, 0.95, 0.9) * (1.0 - scanLine) * 0.2;
+    result += glowOverlay;
+    
+    // Subtle edge glow pulsing
+    float pulse = sin(uTime * 2.0) * 0.5 + 0.5;
+    float edgeGlow = smoothstep(0.4, 0.0, depth) * pulse * 0.08;
+    result += vec3(edgeGlow);
     
     gl_FragColor = vec4(result, 1.0);
   }
@@ -69,18 +72,16 @@ const WIDTH = 300;
 const HEIGHT = 300;
 
 const Scene = () => {
-  const [rawMap, depthMap] = useTexture([TEXTUREMAP.src, DEPTHMAP.src]);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const logoMap = useTexture(brandOrbitLogo);
 
   const uniforms = useMemo(
     () => ({
-      uTexture: { value: rawMap },
-      uDepthMap: { value: depthMap },
+      uTexture: { value: logoMap },
       uPointer: { value: new THREE.Vector2(0, 0) },
       uProgress: { value: 0 },
       uTime: { value: 0 },
     }),
-    [rawMap, depthMap]
+    [logoMap]
   );
 
   const material = useMemo(() => {
@@ -92,7 +93,7 @@ const Scene = () => {
   }, [uniforms]);
 
   const [w, h] = useAspect(WIDTH, HEIGHT);
-  const scaleFactor = 0.4;
+  const scaleFactor = 0.55;
 
   useFrame(({ clock, pointer }) => {
     uniforms.uProgress.value = Math.sin(clock.getElapsedTime() * 0.5) * 0.5 + 0.5;
