@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import AnimatedOrb from "@/components/AnimatedOrb";
+import HeroFuturistic from "@/components/ui/hero-futuristic";
 import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Search, Megaphone, Settings, Laptop } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 const Index = () => {
@@ -35,69 +35,23 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-        {/* Background grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-center lg:text-left space-y-8 fade-in-up">
-              <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                <span className="text-gradient">Transform</span> Your Brand's
-                <br />
-                <span className="text-primary">Digital Orbit</span>
-              </h1>
-              
-              <p className="text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
-                Pull your brand into its next orbit of success with cutting-edge digital transformation services that elevate your business to new heights.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" onClick={() => navigate('/contact')} className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8">
-                  <Rocket className="w-5 h-5 mr-2" />
-                  Launch Your Brand
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-                
-                <Button size="lg" variant="outline" onClick={() => navigate('/services')} className="border-primary/50 hover:bg-primary/10 text-lg px-8">
-                  <Globe className="w-5 h-5 mr-2" />
-                  Explore Services
-                </Button>
-              </div>
-              
-              <div className="flex items-center justify-center lg:justify-start space-x-8 pt-8">
-                <div className="text-center">
-                  
-                  
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-300 px-0 py-0 my-0 mx-0">98%</div>
-                  <div className="text-sm text-muted-foreground">Success Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-400">24/7</div>
-                  <div className="text-sm text-muted-foreground">Support</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex justify-center lg:justify-end fade-in-up" style={{
-            animationDelay: '0.3s'
-          }}>
-              <AnimatedOrb />
-            </div>
-          </div>
+      <HeroFuturistic
+        title="Transform Your Brand's Digital Orbit"
+        subtitle="Pull your brand into its next orbit of success with cutting-edge digital transformation services that elevate your business to new heights."
+      >
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button size="lg" onClick={() => navigate('/contact')} className="bg-gradient-cosmic hover:shadow-glow transition-all duration-300 text-lg px-8">
+            <Rocket className="w-5 h-5 mr-2" />
+            Launch Your Brand
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+          
+          <Button size="lg" variant="outline" onClick={() => navigate('/services')} className="border-primary/50 hover:bg-primary/10 text-lg px-8">
+            <Globe className="w-5 h-5 mr-2" />
+            Explore Services
+          </Button>
         </div>
-        
-        {/* Floating elements */}
-        <div className="absolute top-1/4 left-1/12 w-2 h-2 bg-white rounded-full float-animation"></div>
-        <div className="absolute top-1/3 right-1/12 w-1 h-1 bg-gray-300 rounded-full float-animation" style={{
-        animationDelay: '2s'
-      }}></div>
-        <div className="absolute bottom-1/4 left-1/6 w-1.5 h-1.5 bg-gray-400 rounded-full float-animation" style={{
-        animationDelay: '4s'
-      }}></div>
-      </section>
+      </HeroFuturistic>
 
       {/* Services Section */}
       <section className="py-24 relative">
