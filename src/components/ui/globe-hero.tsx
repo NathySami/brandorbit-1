@@ -125,11 +125,11 @@ const Globe: React.FC<{
   const meshes = useMemo(() => {
     // Emissive material so Bloom picks it up
     const material = new THREE.MeshStandardMaterial({
-      color: "#88bbff",
-      emissive: "#4488ff",
-      emissiveIntensity: 0.6,
+      color: "#ffffff",
+      emissive: "#ffffff",
+      emissiveIntensity: 0.8,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.75,
     });
     const tubeRadius = 0.008;
     const result: THREE.Mesh[] = [];
