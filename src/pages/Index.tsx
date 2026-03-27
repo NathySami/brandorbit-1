@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Navigation from "@/components/Navigation";
-import AnimatedOrb from "@/components/AnimatedOrb";
+import HeroFuturistic from "@/components/ui/hero-futuristic";
 import { ArrowRight, Globe, Zap, Target, Rocket, Sparkles, Code, BarChart3, Search, Megaphone, Settings, Laptop } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 const Index = () => {
