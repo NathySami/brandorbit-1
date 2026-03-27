@@ -70,7 +70,7 @@ const HEIGHT = 300;
 
 const Scene = () => {
   const [rawMap, depthMap] = useTexture([TEXTUREMAP.src, DEPTHMAP.src]);
-  const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
 
   const uniforms = useMemo(
     () => ({
@@ -83,6 +83,14 @@ const Scene = () => {
     [rawMap, depthMap]
   );
 
+  const material = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms,
+    });
+  }, [uniforms]);
+
   const [w, h] = useAspect(WIDTH, HEIGHT);
   const scaleFactor = 0.4;
 
@@ -93,13 +101,8 @@ const Scene = () => {
   });
 
   return (
-    <mesh ref={meshRef} scale={[w * scaleFactor, h * scaleFactor, 1]}>
+    <mesh scale={[w * scaleFactor, h * scaleFactor, 1]} material={material}>
       <planeGeometry args={[1, 1, 32, 32]} />
-      <shaderMaterial
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-      />
     </mesh>
   );
 };
