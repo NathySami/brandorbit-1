@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { PerspectiveCamera, Bloom, EffectComposer } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 import React, { useRef, useMemo } from "react";
 import * as THREE from "three";
 import { cn } from "@/lib/utils";
