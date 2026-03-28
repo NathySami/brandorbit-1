@@ -64,6 +64,118 @@ const Globe: React.FC<{
   );
 };
 
+const STAR_COUNT = 8;
+
+const ShootingStars: React.FC = () => {
+  const starsRef = useRef<THREE.Group>(null!);
+
+  const starData = useMemo(() => {
+    return Array.from({ length: STAR_COUNT }, () => {
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 1.8 + Math.random() * 1.2;
+      return {
+        startX: Math.cos(angle) * dist,
+        startY: (Math.random() - 0.5) * 3,
+        startZ: Math.sin(angle) * dist,
+        dirX: -Math.cos(angle) * 0.6 + (Math.random() - 0.5) * 0.3,
+        dirY: (Math.random() - 0.5) * 0.4,
+        dirZ: -Math.sin(angle) * 0.6 + (Math.random() - 0.5) * 0.3,
+        speed: 0.008 + Math.random() * 0.015,
+        progress: Math.random(),
+        tailLength: 6 + Math.floor(Math.random() * 6),
+      };
+    });
+  }, []);
+
+  const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
+  const trailRefs = useRef<(THREE.Points | null)[]>([]);
+
+  useFrame(() => {
+    starData.forEach((star, i) => {
+      star.progress += star.speed;
+      if (star.progress > 1) {
+        star.progress = 0;
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 1.8 + Math.random() * 1.2;
+        star.startX = Math.cos(angle) * dist;
+        star.startY = (Math.random() - 0.5) * 3;
+        star.startZ = Math.sin(angle) * dist;
+        star.dirX = -Math.cos(angle) * 0.6 + (Math.random() - 0.5) * 0.3;
+        star.dirY = (Math.random() - 0.5) * 0.4;
+        star.dirZ = -Math.sin(angle) * 0.6 + (Math.random() - 0.5) * 0.3;
+        star.speed = 0.008 + Math.random() * 0.015;
+      }
+
+      const t = star.progress;
+      const x = star.startX + star.dirX * t * 4;
+      const y = star.startY + star.dirY * t * 4;
+      const z = star.startZ + star.dirZ * t * 4;
+
+      const mesh = meshRefs.current[i];
+      if (mesh) {
+        mesh.position.set(x, y, z);
+        const fade = t < 0.1 ? t / 0.1 : t > 0.7 ? (1 - t) / 0.3 : 1;
+        (mesh.material as THREE.MeshBasicMaterial).opacity = fade * 0.95;
+      }
+
+      const trail = trailRefs.current[i];
+      if (trail) {
+        const geo = trail.geometry;
+        const pos = geo.attributes.position as THREE.BufferAttribute;
+        for (let j = 0; j < star.tailLength; j++) {
+          const tt = t - j * 0.012;
+          if (tt < 0) {
+            pos.setXYZ(j, 999, 999, 999);
+          } else {
+            pos.setXYZ(
+              j,
+              star.startX + star.dirX * tt * 4,
+              star.startY + star.dirY * tt * 4,
+              star.startZ + star.dirZ * tt * 4
+            );
+          }
+        }
+        pos.needsUpdate = true;
+        const fade = t < 0.1 ? t / 0.1 : t > 0.7 ? (1 - t) / 0.3 : 1;
+        (trail.material as THREE.PointsMaterial).opacity = fade * 0.6;
+      }
+    });
+  });
+
+  return (
+    <group ref={starsRef}>
+      {starData.map((star, i) => (
+        <React.Fragment key={i}>
+          {/* Head glow */}
+          <mesh ref={(el) => { meshRefs.current[i] = el; }}>
+            <sphereGeometry args={[0.025, 8, 8]} />
+            <meshBasicMaterial color="#60dfff" transparent opacity={0.9} toneMapped={false} />
+          </mesh>
+          {/* Trail */}
+          <points ref={(el) => { trailRefs.current[i] = el; }}>
+            <bufferGeometry>
+              <bufferAttribute
+                attach="attributes-position"
+                count={star.tailLength}
+                array={new Float32Array(star.tailLength * 3)}
+                itemSize={3}
+              />
+            </bufferGeometry>
+            <pointsMaterial
+              size={0.018}
+              color="#60dfff"
+              transparent
+              opacity={0.5}
+              sizeAttenuation
+              toneMapped={false}
+            />
+          </points>
+        </React.Fragment>
+      ))}
+    </group>
+  );
+};
+
 const DotGlobeHero = React.forwardRef<HTMLDivElement, DotGlobeHeroProps>(
   ({ rotationSpeed = 0.005, globeRadius = 1, className, children, ...props }, ref) => {
     return (
@@ -83,6 +195,7 @@ const DotGlobeHero = React.forwardRef<HTMLDivElement, DotGlobeHeroProps>(
             <pointLight position={[10, 10, 10]} intensity={0.5} />
             <pointLight position={[-10, -10, -10]} intensity={0.3} />
             <Globe rotationSpeed={rotationSpeed} radius={globeRadius} />
+            <ShootingStars />
           </Canvas>
         </div>
       </div>
