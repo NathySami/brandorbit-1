@@ -5,7 +5,7 @@ const About = () => {
   const team = [{
     name: "Ismael Ibrahim",
     role: "Team Member",
-    description: "Visionary leader in digital transformation"
+    description: ""
   }, {
     name: "Elnathan Berhane",
     role: "Creative Director",
