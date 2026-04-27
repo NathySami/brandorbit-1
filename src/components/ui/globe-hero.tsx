@@ -149,7 +149,7 @@ const ShootingStars: React.FC = () => {
           {/* Head glow */}
           <mesh ref={(el) => { meshRefs.current[i] = el; }}>
             <sphereGeometry args={[0.025, 8, 8]} />
-            <meshBasicMaterial color="#60dfff" transparent opacity={0.9} toneMapped={false} />
+            <meshBasicMaterial color="#f0f5f4" transparent opacity={0.9} toneMapped={false} />
           </mesh>
           {/* Trail */}
           <points ref={(el) => { trailRefs.current[i] = el; }}>
