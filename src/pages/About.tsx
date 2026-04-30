@@ -5,7 +5,7 @@ const About = () => {
   const team = [{
     name: "Ismael Ibrahim",
     role: "CEO & Founder",
-    description: ""
+    description: "Strategic visionary focused on digital transformation and scaling high-impact business systems."
   }, {
     name: "Elnathan Berhane",
     role: "Creative Director",
