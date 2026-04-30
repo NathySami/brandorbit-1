@@ -4,7 +4,7 @@ import { Users, Rocket, Target, Award, Calendar, MapPin } from "lucide-react";
 const About = () => {
   const team = [{
     name: "Ismael Ibrahim",
-    role: "Team Member",
+    role: "Technical Lead & Co-Founder",
     description: ""
   }, {
     name: "Elnathan Berhane",
